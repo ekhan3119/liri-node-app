@@ -6,7 +6,7 @@ var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
 
 var axios = require('axios');
-//var fs = require('fs');
+var fs = require('fs');
 var moment = require('moment');
 
 // create variable to pass arguments in the liri cli
@@ -111,6 +111,10 @@ function getSpotifySong(item) {
         ]
         log(songData);
 
+        fs.appendFile("random.txt", songData, function (err) {
+            if (err) throw err;
+        })
+
     });
 }
 
@@ -121,7 +125,12 @@ switch (command) {
     case 'spotify-this-song':
         getSpotifySong(search);
         break;
-
+    case 'movie-this':
+        getMovieOMDB(search);
+        break;
+    case 'do-what-it-says':
+        getRandom(search);
+        break;
     default:
         log('Please enter a command \n node liri.js concert-this "artist_search" \n node liri.js spotify-this-song "song_search" \n node liri.js movie-this "movie_search"');
 };

@@ -6,7 +6,7 @@ var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
 
 var axios = require('axios');
-//var fs = require('fs');
+var fs = require('fs');
 var moment = require('moment');
 
 // create variable to pass arguments in the liri cli
@@ -112,10 +112,10 @@ function getSpotifySong(item) {
 
         ]
         log(songData);
-        //log(data.tracks.items);
-        /* log('-----------------------------------------');
-        log("Artist Name:  " + data.tracks.items[0].album.artists[0].name + '\n'); */
 
+        fs.appendFile("random.txt", songData, function (err) {
+            if (err) throw err;
+        })
     });
 }
 
