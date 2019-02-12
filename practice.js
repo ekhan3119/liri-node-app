@@ -88,10 +88,13 @@ function getBandName(artist) {
 
 
 //node liri.js spotify-this-song '<song name here>'
-
+/* var spotify = new Spotify({
+    id: 'd0a3bfa326cc4e3d8f581175a970d2d7',
+    secret: 'f5fa2b5a59a24051bb2eec41f4890485'
+});//create instance */
 
 function getSpotifySong(item) {
-    spotify.search({ type: 'track', query: item, limit: 4 }, function (err, data) {
+    spotify.search({ type: 'track', query: item, limit: 1 }, function (err, data) {
         if (err) {
             return log('Error occurred: ' + err);
         }
@@ -109,5 +112,5 @@ switch (command) {
         break;
 
     default:
-        log('Please enter a command \n node liri.js concert-this "artist_search" \n node liri.js spotify-this-song "song_search" \n node liri.js movie-this "movie_search"');
+        log('Please input "concert-this" before artist name search to get the valid response');
 };
