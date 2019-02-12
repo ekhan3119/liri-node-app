@@ -21,7 +21,7 @@ function log(value) {
 }
 
 //write a code/function that can take one of the command from list and gets the correct api and returns correct user search.(concert-this,spotify-this-song, movie-this, do-what-it-says)
-function liriSearch(command, search) {
+/* function liriSearch(command, search) {
     switch (command) {
         case 'concert-this':
             getBandName(search);
@@ -43,7 +43,7 @@ function liriSearch(command, search) {
             log("Enter a valid command: 'concert-this','spotify-this-song', 'movie-this'")
     }
 
-};
+}; */
 //create function to call the Bands in Town Api
 //node liri.js concert-this <artist/band name here>
 function getBandName(artist) {
@@ -91,11 +91,25 @@ function getBandName(artist) {
 
 
 function getSpotifySong(item) {
+    if (!item) {
+        item = "The Sign by Ace Of Base";
+    }
+
     spotify.search({ type: 'track', query: item, limit: 4 }, function (err, data) {
         if (err) {
             return log('Error occurred: ' + err);
         }
-        log(data.tracks.items);
+
+        var songData = [
+            "------------------------------",
+            "Artist Name:  " + data.tracks.items[0].album.artists[0].name,
+            "\nSong Name: " + data.tracks.items[0].name,
+            "\nSong Preview link: " + data.tracks.items[0].href,
+            "\nAlbum: " + data.tracks.items[0].album.name,
+            "-------------------------------------------"
+
+        ]
+        log(songData);
 
     });
 }
