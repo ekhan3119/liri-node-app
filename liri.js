@@ -101,14 +101,13 @@ function getSpotifySong(item) {
         }
 
         var songData = [
-            "------------------------------",
-            "Artist Name:  " + data.tracks.items[0].album.artists[0].name,
+            "-------------------------------------------",
+            "\nArtist Name:  " + data.tracks.items[0].album.artists[0].name,
             "\nSong Name: " + data.tracks.items[0].name,
             "\nSong Preview link: " + data.tracks.items[0].href,
             "\nAlbum: " + data.tracks.items[0].album.name,
-            "-------------------------------------------"
-
-        ]
+            "\n-------------------------------------------"
+        ].join('\n')
         log(songData);
 
         fs.appendFile("random.txt", songData, function (err) {

@@ -87,11 +87,7 @@ function getBandName(artist) {
 };
 
 
-//node liri.js spotify-this-song '<song name here>'
-/* var spotify = new Spotify({
-    id: 'd0a3bfa326cc4e3d8f581175a970d2d7',
-    secret: 'f5fa2b5a59a24051bb2eec41f4890485'
-});//create instance */
+
 
 function getSpotifySong(item) {
     if (!item) {
