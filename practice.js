@@ -114,6 +114,21 @@ function getSpotifySong(item) {
         })
     });
 }
+function getMovieOMDB(movie) {
+    if (!movie) {
+        movie = "Mr.Nobody";
+    }
+    var movieUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
+    log(movieUrl);
+    axios.get(movieUrl)
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+getMovieOMDB();
 
 switch (command) {
     case 'concert-this':
@@ -122,7 +137,9 @@ switch (command) {
     case 'spotify-this-song':
         getSpotifySong(search);
         break;
-
+    case 'movie-this':
+        getMovieOMDB(search);
+        break;
     default:
-        log('Please input "concert-this" before artist name search to get the valid response');
+        log('Please input a valid search item!');
 };

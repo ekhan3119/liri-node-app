@@ -16,30 +16,7 @@ var search = process.argv.slice(3).join(" ");
 log('search : ' + search);
 
 
-//write a code/function that can take one of the command from list and gets the correct api and returns correct user search.(concert-this,spotify-this-song, movie-this, do-what-it-says)
-/* function liriSearch(command, search) {
-    switch (command) {
-        case 'concert-this':
-            getBandName(search);
-            break;
 
-        case 'spotify-this-song':
-            getSpotifySong(search);
-            break;
-
-        case 'movie-this':
-            getMovieOMDB(search);
-            break;
-
-        case 'do-what-it-says':
-            getRandom(search);
-            break;
-        //if user does not enter a valid key word then show this
-        default:
-            log("Enter a valid command: 'concert-this','spotify-this-song', 'movie-this'")
-    }
-
-}; */
 //create function to call the Bands in Town Api
 //node liri.js concert-this <artist/band name here>
 function getBandName(artist) {
@@ -48,20 +25,6 @@ function getBandName(artist) {
     var bandUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
     axios.get(bandUrl)
         .then(function (response) {
-            //this is a loop that returns all the concerts of a artist. This code works but I am commenting it out beacuse I wanted to display the first one only.(I was practices the different ways that I can write the same this or slightly different)
-            /*   for(var i = 0; i < response.data.length; i++){
-                 var venue = response.data[i].venue.name;
-                 log(venue);
-                 var city = response.data[i].venue.city;
-                 log(city);
-                 var country = response.data[i].venue.country;
-                 log(country);
-                 var date = moment(response.data[i].venue.datetime).format('MM/DD/YY');
-                 //var newDate = moment(date).format('MM/DD/YY');  
-                 log(date);
-                 log('===================');
-                 } */
-
 
             //console.log(response.data[0]);
             var data = response.data[0];
@@ -75,7 +38,9 @@ function getBandName(artist) {
                 "------------------------"
             ].join('\n');
             log(artistEventData);
-
+            fs.appendFile('log.txt', artistEventData, function (err) {
+                if (err) throw err;
+            });
         })
         .catch(function (error) {
             log(error);
@@ -84,8 +49,6 @@ function getBandName(artist) {
 
 
 //node liri.js spotify-this-song '<song name here>'
-
-
 function getSpotifySong(item) {
     if (!item) {
         item = "The Sign by Ace Of Base";
@@ -95,7 +58,6 @@ function getSpotifySong(item) {
         if (err) {
             return log('Error occurred: ' + err);
         }
-
         var songData = [
             "-------------------------------------------",
             "\nArtist Name:  " + data.tracks.items[0].album.artists[0].name,
@@ -105,10 +67,46 @@ function getSpotifySong(item) {
             "\n-------------------------------------------"
         ].join('\n')
         log(songData);
-
+        fs.appendFile('log.txt', songData, function (err) {
+            if (err) throw err;
+        });
 
     });
 }
+
+//node liri.js movie-this '<movie name here>'
+function getMovieOMDB(movie) {
+    if (!movie) {
+        movie = "Mr. Nobody";
+    }
+    var movieUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
+    //log(movieUrl);
+
+    axios.request(movieUrl)
+        .then(function (response) {
+            //log(response);
+            var movieData = [
+                "-------------------------------------------",
+                "\nTitle:  " + response.data.Title,
+                "\nYear: " + response.data.Year,
+                "\nIMBD Ratings: " + response.data.imdbRating,
+                "\nRotten Tomatoes Rating: " + response.data.Ratings,
+                "\nCounrty WhereProduced: " + response.data.Country,
+                "\nLanguage: " + response.data.Language,
+                "\nPlot: " + response.data.Plot,
+                "\nActors: " + response.data.Actors,
+                "\n-------------------------------------------"
+            ].join('\n');
+            log(movieData);
+            fs.appendFile('log.txt', movieData, function (err) {
+                if (err) throw err;
+            });
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
 function doWhatItSays() {
 
     fs.readFile("random.txt", 'utf-8', function (err, data) {
