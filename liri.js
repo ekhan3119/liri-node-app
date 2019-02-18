@@ -4,7 +4,7 @@ require("dotenv").config();
 var keys = require("./keys.js");
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
-
+var log = console.log;
 var axios = require('axios');
 var fs = require('fs');
 var moment = require('moment');
@@ -15,10 +15,6 @@ var command = process.argv[2];
 var search = process.argv.slice(3).join(" ");
 log('search : ' + search);
 
-//create a function to store console.log for shortcut
-function log(value) {
-    console.log(value);
-}
 
 //write a code/function that can take one of the command from list and gets the correct api and returns correct user search.(concert-this,spotify-this-song, movie-this, do-what-it-says)
 /* function liriSearch(command, search) {
@@ -110,13 +106,16 @@ function getSpotifySong(item) {
         ].join('\n')
         log(songData);
 
-        fs.appendFile("random.txt", songData, function (err) {
-            if (err) throw err;
-        })
 
     });
 }
+function doWhatItSays() {
 
+    fs.readFile("random.txt", 'utf-8', function (err, data) {
+        if (err) throw err;
+        getSpotifySong(data);
+    })
+}
 switch (command) {
     case 'concert-this':
         getBandName(search);
@@ -128,7 +127,7 @@ switch (command) {
         getMovieOMDB(search);
         break;
     case 'do-what-it-says':
-        getRandom(search);
+        doWhatItSays();
         break;
     default:
         log('Please enter a command \n node liri.js concert-this "artist_search" \n node liri.js spotify-this-song "song_search" \n node liri.js movie-this "movie_search"');
